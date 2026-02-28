@@ -1,0 +1,1 @@
+# mingo.japanese55-60
