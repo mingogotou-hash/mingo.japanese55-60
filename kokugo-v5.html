@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>みんなの誤答集 国語記述問題編</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ── design tokens ── */
+:root {
+  --ink:      #1A2744;
+  --ink-mid:  #4A5568;
+  --ink-soft: #8896AD;
+  --cream:    #F6F3EE;
+  --cream2:   #EFEBE3;
+  --white:    #FDFCF9;
+  --terra:    #C4603A;
+  --terra-lt: #F9EDE8;
+  --terra-bd: #E5B8A8;
+  --teal:     #2D6A5E;
+  --teal-lt:  #E8F4F1;
+  --teal-bd:  #A8D4CC;
+  --gold:     #9A7030;
+  --gold-lt:  #FBF5E6;
+  --gold-bd:  #D4BC80;
+  --r: 10px;
+  --r-lg: 16px;
+  --sh: 0 2px 16px rgba(26,39,68,.07);
+  --sh-lg: 0 6px 32px rgba(26,39,68,.10);
+}
+
+/* ── reset ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.75;
+  /* grain texture */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");
+}
+
+/* ── screens ── */
+.screen { display:none; }
+.screen.active { display:block; }
+
+/* ════════════════════════════════
+   TYPOGRAPHY HELPERS
+════════════════════════════════ */
+.mincho { font-family: 'Shippori Mincho', serif; }
+.dm     { font-family: 'DM Serif Display', serif; }
+
+.sec-label {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 9px; letter-spacing: .35em; font-weight: 700;
+  text-transform: uppercase; color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.sec-label::before {
+  content: ''; width: 20px; height: 1px; background: var(--ink-soft);
+}
+
+/* ════════════════════════════════
+   TOP SCREEN
+════════════════════════════════ */
+#top {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+
+/* hero */
+.hero {
+  background: var(--ink);
+  position: relative; overflow: hidden;
+  padding: 64px 28px 52px;
+}
+
+/* grid lines */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* decorative circle */
+.hero::after {
+  content: '';
+  position: absolute; right: -80px; top: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  border: 60px solid rgba(196,96,58,.18);
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 420px; margin: 0 auto;
+}
+
+.hero-en {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 13px; color: var(--terra);
+  letter-spacing: .05em; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-en::before {
+  content: ''; width: 28px; height: 1px; background: var(--terra);
+}
+
+.hero-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 32px; font-weight: 800;
+  color: #fff; line-height: 1.25;
+  margin-bottom: 20px;
+  letter-spacing: .02em;
+}
+
+.hero-divider {
+  width: 40px; height: 2px;
+  background: var(--terra);
+  margin-bottom: 16px;
+}
+
+.hero-sub {
+  font-size: 14px; color: rgba(255,255,255,.55);
+  letter-spacing: .06em;
+  font-family: 'Shippori Mincho', serif;
+}
+
+/* stats strip */
+.stats-strip {
+  background: var(--terra);
+  display: flex; overflow: hidden;
+}
+.stat-item {
+  flex: 1;
+  padding: 14px 10px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,.15);
+  position: relative;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px; color: #fff; line-height: 1;
+  margin-bottom: 2px;
+}
+.stat-label {
+  font-size: 9px; letter-spacing: .2em;
+  color: rgba(255,255,255,.7); font-weight: 500;
+}
+
+/* body section */
+.top-body {
+  padding: 32px 20px 48px;
+  max-width: 460px; margin: 0 auto;
+  width: 100%;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+.concept-card {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh);
+}
+.cc-head {
+  background: var(--gold-lt);
+  border-bottom: 1px solid var(--gold-bd);
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.cc-head-icon { font-size: 16px; }
+.cc-head-text {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  letter-spacing: .04em;
+}
+.cc-body {
+  padding: 18px 20px;
+  font-size: 13.5px; color: var(--ink-mid);
+  line-height: 2;
+}
+
+/* flow card */
+.flow-card {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r-lg);
+  padding: 22px 20px;
+  box-shadow: var(--sh);
+}
+
+.flow-steps { display: flex; flex-direction: column; gap: 0; }
+.flow-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--cream2);
+  animation: fadeUp .4s ease both;
+}
+.flow-step:nth-child(1) { animation-delay: .05s; }
+.flow-step:nth-child(2) { animation-delay: .10s; }
+.flow-step:nth-child(3) { animation-delay: .15s; }
+.flow-step:nth-child(4) { animation-delay: .20s; }
+.flow-step:last-child { border-bottom: none; }
+
+.fs-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; color: var(--terra);
+  flex-shrink: 0; width: 28px; line-height: 1.2;
+  padding-top: 2px;
+}
+.fs-text b { font-size: 14px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 1px; }
+.fs-text span { font-size: 12px; color: var(--ink-soft); }
+
+/* start button */
+.start-btn {
+  width: 100%;
+  background: var(--ink);
+  color: #fff; border: none;
+  border-radius: var(--r);
+  padding: 18px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 15px; font-weight: 700;
+  letter-spacing: .12em;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(26,39,68,.25);
+  transition: transform .15s, box-shadow .15s;
+}
+.start-btn::after {
+  content: '→';
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%);
+  font-family: sans-serif;
+  color: var(--terra); font-size: 18px;
+  transition: right .2s;
+}
+.start-btn:active { transform: scale(.98); box-shadow: 0 2px 10px rgba(26,39,68,.2); }
+.start-btn:active::after { right: 16px; }
+
+/* ════════════════════════════════
+   LIST SCREEN
+════════════════════════════════ */
+#list { min-height: 100vh; }
+
+.list-topbar {
+  background: var(--ink);
+  padding: 48px 20px 24px;
+  position: relative;
+}
+.list-topbar::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,96,58,.5), transparent);
+}
+
+.ltb-back {
+  position: absolute; top: 12px; left: 14px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.7);
+  border-radius: 6px; padding: 5px 14px;
+  font-size: 12px; cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  letter-spacing: .04em;
+}
+
+.list-topbar h2 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px; font-weight: 800;
+  color: #fff; margin-bottom: 4px;
+}
+.list-topbar p {
+  font-size: 12px; color: rgba(255,255,255,.45); letter-spacing: .04em;
+}
+
+.list-sections { padding: 28px 16px 48px; }
+
+.wall-section { margin-bottom: 32px; }
+.wall-label {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+.wall-badge {
+  background: var(--ink);
+  color: var(--terra);
+  font-family: 'DM Serif Display', serif;
+  font-size: 12px; padding: 3px 10px;
+  border-radius: 4px; letter-spacing: .06em;
+}
+.wall-name {
+  font-size: 11px; letter-spacing: .2em; font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.wall-items { display: flex; flex-direction: column; gap: 8px; }
+
+.list-item {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  cursor: pointer;
+  display: flex; gap: 14px; align-items: center;
+  box-shadow: var(--sh);
+  transition: border-color .2s, transform .15s, box-shadow .15s;
+  animation: fadeUp .35s ease both;
+}
+.list-item:hover { border-color: var(--ink-soft); }
+.list-item:active { transform: scale(.99); box-shadow: none; }
+
+.li-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; color: var(--terra);
+  flex-shrink: 0; width: 26px; text-align: center;
+}
+.li-divider { width: 1px; height: 36px; background: var(--cream2); flex-shrink: 0; }
+.li-info { flex: 1; min-width: 0; }
+.li-theme {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; font-weight: 700; color: var(--ink);
+  margin-bottom: 2px;
+}
+.li-q { font-size: 11px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.li-arrow { color: var(--cream2); font-size: 20px; flex-shrink: 0; }
+
+/* ════════════════════════════════
+   LESSON SCREEN
+════════════════════════════════ */
+#lesson { padding-bottom: 72px; }
+
+/* sticky top bar */
+.lesson-bar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(253,252,249,.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cream2);
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.lb-back {
+  background: transparent; border: 1px solid var(--cream2);
+  border-radius: 6px; padding: 5px 14px;
+  font-size: 12px; color: var(--ink-mid);
+  cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
+  flex-shrink: 0;
+}
+.lb-track { flex: 1; }
+.lb-steps {
+  display: flex; gap: 4px; margin-bottom: 4px;
+}
+.lb-step {
+  height: 3px; flex: 1; border-radius: 2px;
+  background: var(--cream2);
+  transition: background .4s;
+}
+.lb-step.done { background: var(--ink); }
+.lb-step.active { background: var(--terra); }
+.lb-lbl { font-size: 10px; letter-spacing: .15em; color: var(--ink-soft); }
+
+/* phase animation */
+.phase { display: none; }
+.phase.active { display: block; animation: fadeUp .3s ease; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:none; }
+}
+
+.lbody { padding: 0 18px; }
+
+/* ── phase hero ── */
+.ph-hero {
+  background: var(--ink);
+  margin: 0 -18px; padding: 28px 22px 24px;
+  position: relative; overflow: hidden;
+}
+.ph-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.ph-hero::after {
+  content: '';
+  position: absolute; right: -60px; bottom: -60px;
+  width: 180px; height: 180px; border-radius: 50%;
+  border: 40px solid rgba(196,96,58,.12);
+}
+.ph-hero-inner { position: relative; z-index: 1; }
+.ph-wall {
+  font-size: 9px; letter-spacing: .35em; font-weight: 700;
+  color: var(--terra); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ph-wall::before { content: ''; width: 16px; height: 1px; background: var(--terra); }
+.ph-theme {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px; font-weight: 800; color: #fff; line-height: 1.3;
+}
+
+/* ── passage ── */
+.passage-wrap {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+  margin-top: 20px;
+}
+.passage-head {
+  padding: 10px 16px;
+  background: var(--gold-lt);
+  border-bottom: 1px solid var(--gold-bd);
+  font-size: 9px; letter-spacing: .3em; font-weight: 700;
+  color: var(--gold);
+  display: flex; align-items: center; gap: 8px;
+}
+.passage-head::before { content: ''; width: 14px; height: 1px; background: var(--gold); }
+.passage-text {
+  padding: 20px 18px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; line-height: 2.3; color: var(--ink);
+}
+
+/* ── question box ── */
+.q-wrap {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+  margin-top: 12px;
+}
+.q-head {
+  padding: 10px 16px;
+  background: var(--terra-lt);
+  border-bottom: 1px solid var(--terra-bd);
+  font-size: 9px; letter-spacing: .3em; font-weight: 700;
+  color: var(--terra);
+  display: flex; align-items: center; gap: 8px;
+}
+.q-head::before { content: ''; width: 14px; height: 1px; background: var(--terra); }
+.q-body { padding: 16px 18px; }
+.q-text {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 15px; font-weight: 700; line-height: 1.9; color: var(--ink);
+}
+.q-score { font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+
+/* ── collapsible passage in ph2 ── */
+.passage-collapse {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+  margin-top: 12px;
+}
+.collapse-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: var(--gold-lt);
+  border: none; width: 100%;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--gold); font-size: 12px; font-weight: 700;
+  letter-spacing: .06em;
+  user-select: none;
+}
+.collapse-toggle::after {
+  content: '▼';
+  font-size: 10px;
+  transition: transform .2s;
+}
+.collapse-toggle.open::after { transform: rotate(180deg); }
+.collapse-body {
+  display: none;
+  border-top: 1px solid var(--gold-bd);
+}
+.collapse-body.open {
+  display: block;
+  animation: fadeUp .2s ease;
+}
+.collapse-q {
+  padding: 12px 16px;
+  border-top: 1px solid var(--cream2);
+  background: var(--terra-lt);
+}
+.collapse-q-lbl {
+  font-size: 9px; letter-spacing: .3em; font-weight: 700;
+  color: var(--terra); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.collapse-q-lbl::before { content: ''; width: 10px; height: 1px; background: var(--terra); }
+.collapse-q-text {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.9;
+}
+
+/* ── nav button ── */
+.nav-btn {
+  width: 100%; margin-top: 20px;
+  background: var(--ink); color: #fff; border: none;
+  border-radius: var(--r);
+  padding: 16px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 15px; font-weight: 700; letter-spacing: .06em;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  box-shadow: 0 3px 16px rgba(26,39,68,.2);
+  transition: transform .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-btn::after {
+  content: '→'; margin-left: 8px;
+  font-family: sans-serif; color: var(--terra);
+}
+.nav-btn:active { transform: scale(.98); }
+
+.nav-btn.sub {
+  background: transparent; color: var(--ink-mid);
+  border: 1px solid var(--cream2); box-shadow: none;
+  margin-top: 10px; font-size: 13px;
+}
+.nav-btn.sub::after { display: none; }
+
+/* ── tip ── */
+.tip {
+  background: var(--teal-lt); border: 1px solid var(--teal-bd);
+  border-radius: var(--r); padding: 14px 16px;
+  font-size: 13px; color: var(--teal); line-height: 1.9;
+  margin-top: 16px;
+}
+.tip b { font-weight: 700; }
+
+/* ════════════════════
+   WRONG ANSWER CARD
+════════════════════ */
+.wa-progress {
+  font-size: 10px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 700;
+  margin: 20px 0 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.wa-progress::before { content: ''; flex: 1; height: 1px; background: var(--cream2); }
+
+.wa-card {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh);
+}
+.wa-card-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  background: var(--cream);
+  border-bottom: 1px solid var(--cream2);
+}
+
+.wa-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px; flex-shrink: 0;
+  position: relative;
+}
+.wa-avatar::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: .3;
+}
+.wa-avatar.a { background: #FEF0EE; color: var(--terra); }
+.wa-avatar.b { background: var(--gold-lt); color: var(--gold); }
+.wa-avatar.c { background: var(--teal-lt); color: var(--teal); }
+
+.wa-meta {}
+.wa-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; font-weight: 700; color: var(--ink);
+}
+.wa-chars { font-size: 11px; color: var(--ink-soft); }
+
+.wa-text {
+  padding: 20px 18px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14.5px; line-height: 2.2; color: var(--ink);
+}
+
+/* ── judge rows ── */
+.judge-wrap { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.judge-sec-lbl {
+  font-size: 9px; letter-spacing: .3em; font-weight: 700;
+  color: var(--ink-soft);
+  display: flex; align-items: center; gap: 8px;
+}
+.judge-sec-lbl::before { content: ''; width: 16px; height: 1px; background: var(--ink-soft); }
+
+.judge-card {
+  background: var(--white);
+  border: 1.5px solid var(--cream2);
+  border-radius: var(--r);
+  overflow: hidden;
+  transition: border-color .25s;
+}
+.judge-card.ok { border-color: var(--teal-bd); }
+.judge-card.ng { border-color: var(--terra-bd); }
+
+.judge-q {
+  padding: 13px 16px;
+  background: var(--cream);
+  border-bottom: 1px solid var(--cream2);
+}
+.judge-elem-lbl {
+  font-size: 9px; letter-spacing: .25em; font-weight: 700;
+  margin-bottom: 5px;
+}
+.judge-elem-lbl.e1 { color: var(--terra); }
+.judge-elem-lbl.e2 { color: var(--gold); }
+.judge-elem-lbl.er { color: var(--teal); }
+.judge-elem-lbl.ex { color: var(--ink-mid); }
+
+.judge-q-text { font-size: 13px; line-height: 1.75; color: var(--ink); }
+
+.judge-btns { display: flex; border-top: 1px solid var(--cream2); }
+.judge-btn {
+  flex: 1; padding: 14px 0;
+  border: none; cursor: pointer;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .04em;
+  transition: background .15s;
+}
+.judge-btn:disabled { opacity: .45; cursor: default; }
+.judge-btn.yes {
+  background: var(--teal-lt); color: var(--teal);
+  border-right: 1px solid var(--cream2);
+}
+.judge-btn.no {
+  background: var(--terra-lt); color: var(--terra);
+}
+.judge-btn.yes.chosen { background: var(--teal);  color: #fff; }
+.judge-btn.no.chosen  { background: var(--terra); color: #fff; }
+
+.judge-fb {
+  display: none;
+  padding: 13px 16px;
+  font-size: 13px; line-height: 1.85;
+  border-top: 1px dashed var(--cream2);
+  animation: fadeUp .2s ease;
+}
+.judge-fb.show { display: block; }
+.judge-fb.ok { background: var(--teal-lt); color: #1A4A3A; }
+.judge-fb.ng { background: var(--terra-lt); color: #7A3020; }
+.jf-head { font-weight: 700; font-size: 12px; margin-bottom: 4px; }
+
+/* ── partial score ── */
+.ps-card {
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-lg);
+  margin-top: 20px;
+  animation: fadeUp .3s ease;
+}
+.ps-card.show { display: block; }
+
+.ps-head {
+  background: var(--ink);
+  padding: 14px 18px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ps-head-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 13px; font-weight: 700; color: rgba(255,255,255,.7);
+}
+.ps-head-score {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px; color: #fff; line-height: 1;
+}
+.ps-head-score small { font-size: 12px; font-family: 'Noto Sans JP', sans-serif; color: rgba(255,255,255,.5); margin-left: 2px; }
+
+.ps-rows { border-bottom: 1px solid var(--cream2); }
+.ps-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--cream2);
+  font-size: 13px;
+}
+.ps-row:last-child { border-bottom: none; }
+.ps-pt-ok { color: var(--teal); font-weight: 700; }
+.ps-pt-ng { color: var(--terra); font-weight: 700; }
+
+.ps-disease-wrap { padding: 16px 18px; }
+.ps-disease-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; font-weight: 800; color: var(--terra);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.ps-disease-name::before {
+  content: '';
+  width: 3px; height: 16px; background: var(--terra);
+  border-radius: 2px; flex-shrink: 0;
+}
+.ps-advice { font-size: 13px; color: var(--ink-mid); line-height: 1.9; }
+
+/* ════════════════════
+   CRITERIA (ph3)
+════════════════════ */
+.crit-intro {
+  background: var(--white); border: 1px solid var(--cream2);
+  border-radius: var(--r); padding: 16px 18px;
+  font-size: 13px; color: var(--ink-mid); line-height: 1.95;
+  margin-bottom: 16px; box-shadow: var(--sh);
+}
+
+.crit-list { display: flex; flex-direction: column; gap: 10px; }
+
+.crit-card {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r);
+  display: flex; overflow: hidden;
+  box-shadow: var(--sh);
+}
+.crit-pts-col {
+  width: 68px; flex-shrink: 0;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 16px 0;
+}
+.crit-pts-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px; color: #fff; line-height: 1;
+}
+.crit-pts-lbl { font-size: 9px; color: rgba(255,255,255,.4); letter-spacing: .1em; margin-top: 3px; }
+.crit-card.rule .crit-pts-col { background: var(--gold); }
+
+.crit-info { padding: 14px 16px; flex: 1; }
+.crit-tag { font-size: 9px; letter-spacing: .25em; font-weight: 700; color: var(--ink-soft); margin-bottom: 5px; }
+.crit-text { font-size: 13px; color: var(--ink); line-height: 1.75; }
+
+/* ════════════════════
+   MODEL ANSWER (ph4)
+════════════════════ */
+.model-wrap {
+  background: var(--white);
+  border: 1px solid var(--cream2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-lg);
+}
+.model-head {
+  background: var(--ink);
+  padding: 12px 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.model-badge {
+  background: var(--terra);
+  color: #fff; font-size: 9px; font-weight: 700;
+  letter-spacing: .2em; padding: 3px 10px;
+  border-radius: 3px;
+}
+.model-pts {
+  font-size: 11px; color: rgba(255,255,255,.45);
+  margin-left: auto;
+}
+.model-body { padding: 20px 18px; }
+.model-text {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 17px; line-height: 2.1; color: var(--ink); font-weight: 600;
+}
+.model-chars { font-size: 11px; color: var(--ink-soft); margin-top: 8px; }
+
+.elem-rows { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.elem-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--cream2);
+  border-radius: var(--r); padding: 12px 14px;
+  box-shadow: var(--sh);
+}
+.elem-tag { font-size: 9px; font-weight: 700; letter-spacing: .18em; flex-shrink: 0; padding-top: 3px; min-width: 64px; }
+.elem-tag.e1 { color: var(--terra); }
+.elem-tag.e2 { color: var(--gold); }
+.elem-tag.e3 { color: var(--teal); }
+.elem-tag.er { color: var(--ink-mid); }
+.elem-text { font-size: 13px; color: var(--ink); line-height: 1.75; }
+
+.summary-wrap {
+  background: var(--white); border: 1px solid var(--gold-bd);
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: var(--sh);  margin-top: 16px;
+}
+.summary-head {
+  background: var(--gold-lt); border-bottom: 1px solid var(--gold-bd);
+  padding: 12px 18px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  display: flex; align-items: center; gap: 8px;
+}
+.summary-head::before { content: '💡'; }
+.summary-rules { padding: 6px 0; }
+.summary-rule {
+  padding: 11px 18px;
+  border-bottom: 1px dashed var(--cream2);
+  font-size: 13px; color: var(--ink);
+  line-height: 1.8;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.summary-rule:last-child { border-bottom: none; }
+.summary-rule::before { content: '→'; color: var(--terra); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+</style>
+</head>
+<body>
+
+<!-- ════════ TOP ════════ -->
+<div id="top" class="screen active">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-en">Gotrô Collection</div>
+      <div class="hero-title">みんなの誤答集</div>
+      <div class="hero-divider"></div>
+      <div class="hero-sub">偏差値55→60の壁</div>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-num">10</div>
+      <div class="stat-label">問題</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">30</div>
+      <div class="stat-label">誤答例</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">壁の種類</div>
+    </div>
+  </div>
+
+  <div class="top-body">
+    <div class="concept-card">
+      <div class="cc-head">
+        <div class="cc-head-icon">📖</div>
+        <div class="cc-head-text">この教材のねらい</div>
+      </div>
+      <div class="cc-body">
+        記述の失点には「パターン」があります。他の人の答案を採点する気持ちで読むことで、自分が書くときに同じミスをしなくなります。
+      </div>
+    </div>
+
+    <div class="flow-card">
+      <div class="sec-label" style="margin-bottom:16px">学習の流れ</div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="fs-num">1</div>
+          <div class="fs-text"><b>課題文と設問を読む</b><span>出題者が何を聞いているか考える</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="fs-num">2</div>
+          <div class="fs-text"><b>誤答A〜Cを要素ごとに診断</b><span>○か✕か——自分で判定してみよう</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="fs-num">3</div>
+          <div class="fs-text"><b>プロの採点基準を確認</b><span>なぜ点が入らないのかを理解する</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="fs-num">4</div>
+          <div class="fs-text"><b>模範解答で答え合わせ</b><span>満点の構造を見て完成させる</span></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="showList()">問題を選ぶ</button>
+  </div>
+</div>
+
+<!-- ════════ LIST ════════ -->
+<div id="list" class="screen">
+  <div class="list-topbar">
+    <button class="ltb-back" onclick="show('top')">← 戻る</button>
+    <h2>問題一覧</h2>
+    <p>気になるところから始めよう · 全10問</p>
+  </div>
+  <div class="list-sections" id="list-body"></div>
+</div>
+
+<!-- ════════ LESSON ════════ -->
+<div id="lesson" class="screen">
+  <div class="lesson-bar">
+    <button class="lb-back" onclick="showList()">← 一覧</button>
+    <div class="lb-track">
+      <div class="lb-steps" id="lb-steps">
+        <div class="lb-step" id="ls1"></div>
+        <div class="lb-step" id="ls2"></div>
+        <div class="lb-step" id="ls3"></div>
+        <div class="lb-step" id="ls4"></div>
+      </div>
+      <div class="lb-lbl" id="lb-lbl">STEP 1 / 4</div>
+    </div>
+  </div>
+
+  <div class="lbody">
+    <!-- Phase 1 -->
+    <div class="phase" id="ph1">
+      <div class="ph-hero">
+        <div class="ph-hero-inner">
+          <div class="ph-wall" id="ph1-wall"></div>
+          <div class="ph-theme" id="ph1-theme"></div>
+        </div>
+      </div>
+      <div class="sec-label" style="margin-top:22px">課 題 文</div>
+      <div class="passage-wrap">
+        <div class="passage-head">本文</div>
+        <div class="passage-text" id="ph1-passage"></div>
+      </div>
+      <div class="sec-label" style="margin-top:16px">設 問</div>
+      <div class="q-wrap">
+        <div class="q-head">Question</div>
+        <div class="q-body">
+          <div class="q-text" id="ph1-q"></div>
+          <div class="q-score" id="ph1-score"></div>
+        </div>
+      </div>
+      <div class="tip">📖 設問をよく読んで、<b>出題者が何を求めているか</b>を意識しながら誤答を読もう</div>
+      <button class="nav-btn" onclick="startWA()">誤答を診断する</button>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase" id="ph2">
+      <div id="ph2-body"></div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase" id="ph3">
+      <div class="sec-label" style="margin-top:22px">プロの採点基準</div>
+      <div class="crit-intro" id="ph3-intro"></div>
+      <div class="crit-list" id="ph3-crit"></div>
+      <button class="nav-btn" style="margin-top:20px" onclick="goPhase(4)">模範解答を見る</button>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase" id="ph4">
+      <div class="sec-label" style="margin-top:22px">模 範 解 答</div>
+      <div class="model-wrap">
+        <div class="model-head">
+          <div class="model-badge">満点答案</div>
+          <div class="model-pts" id="ph4-pts"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-text" id="ph4-model"></div>
+          <div class="model-chars" id="ph4-chars"></div>
+        </div>
+      </div>
+      <div class="elem-rows" id="ph4-elems"></div>
+      <div class="summary-wrap" id="ph4-summary"></div>
+      <button class="nav-btn" id="ph4-next" style="margin-top:24px"></button>
+      <button class="nav-btn sub" onclick="showList()">問題一覧に戻る</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA — ここだけ編集で問題の追加・修正ができます
+═══════════════════════════════════════════════ */
+const DB = [
+
+  /* ── WALL 01 形式の壁 ── */
+  {
+    wall:"WALL 01", wallLabel:"形式の壁",
+    theme:"タイパと読書",
+    passage:`現代はタイパ（タイムパフォーマンス）が重視され、映画や本も「あらすじ」だけを短時間で消費する人が増えた。確かに効率は良い。しかし、私はあえて「難解で長い小説」を読むことの意義を主張したい。\n　時間をかけて難解な言葉と格闘することは、他者の複雑な感情を想像する力を養ってくれる。さらに、物語の世界にどっぷりと浸かるその時間は、効率からは決して生まれない、読者自身の心を豊かにする深い癒しをもたらすのである。`,
+    question:"筆者が「難解で長い小説」を読む意義はどこにあると考えているか。50字以内で説明せよ。",
+    score:"配点：10点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"タイパを重視してあらすじだけを短時間で消費するのではなく、他者の複雑な感情を想像する力が養えるから。",
+        chars:"50字",
+        judges:[
+          { elemLabel:"要素①", elemCls:"e1", q:"「他者の複雑な感情を想像する力を養う」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「感情を想像する力が養えるから」と書かれており、要素①を含んでいます。",
+            ngFb:"△ 「感情を想像する力が養えるから」という記述があります。要素①は含まれています。", pts:4, label:"要素①" },
+          { elemLabel:"要素②", elemCls:"e2", q:"「心を豊かにする深い癒しをもたらす」という内容が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「心を豊かにする癒し」は一切書かれていません。前半のタイパ説明に字数を使いきったため、要素②が入りませんでした。",
+            ngFb:"△ 「癒し」「心を豊かにする」という記述はありません。要素②は書かれていません。", pts:0, label:"要素②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「意義を説明せよ」に対して、文末が「〜から。」「〜ため。」の形になっているか？",
+            correct:true,
+            okFb:"○ 正解！「〜から。」で終わっており、理由・意義の文末形式として正しいです。",
+            ngFb:"△ 「〜から。」で終わっています。文末形式は正しいです。", pts:2, label:"文末" }
+        ],
+        disease:"要素の片落ち（前半のみ）",
+        totalScore:"6点", scoreClass:"mid",
+        advice:"前半の「タイパを重視して〜」は設問の答えに不要な背景情報です。この部分に字数を使ったため、要素②が入りませんでした。設問を読んだらまず「必要な要素は何個か」を確認しましょう。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"難解な言葉と格闘し他者の感情を想像する力を養うとともに、自分の心を豊かにする深い癒しをもたらすこと。",
+        chars:"50字",
+        judges:[
+          { elemLabel:"要素①", elemCls:"e1", q:"「他者の複雑な感情を想像する力を養う」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！要素①を正確に押さえています。",
+            ngFb:"△ 「感情を想像する力を養う」と書かれています。要素①は含まれています。", pts:4, label:"要素①" },
+          { elemLabel:"要素②", elemCls:"e2", q:"「心を豊かにする深い癒しをもたらす」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「心を豊かにする深い癒しをもたらす」と正確に書かれています。",
+            ngFb:"△ 「心を豊かにする深い癒しをもたらす」と書かれています。要素②は含まれています。", pts:4, label:"要素②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「意義を説明せよ」に対して、文末が「〜から。」「〜ため。」の形になっているか？",
+            correct:false,
+            okFb:"✕ 惜しい！「〜こと。」は「説明せよ」には使えますが、「意義を説明せよ」という問いには「〜から。」「〜ため。」が適切です。これだけで2点失点。",
+            ngFb:"○ 正解！「〜こと。」は理由・意義の文末としては不十分。「〜から。」に変えるだけで満点でした。", pts:0, label:"文末" }
+        ],
+        disease:"文末形式の壁（あと1歩で満点）",
+        totalScore:"8点", scoreClass:"high",
+        advice:"要素の見抜き方は完璧です。「〜こと。」→「〜から。」に変えるだけで満点になります。「意義・理由を答えよ」という設問には必ず「〜から。」「〜ため。」で締める習慣をつけましょう。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"現代はタイパが重視され効率が良いが、難解な言葉と格闘することは読者の心を豊かにする深い癒しになる。",
+        chars:"49字",
+        judges:[
+          { elemLabel:"要素①", elemCls:"e1", q:"「他者の複雑な感情を想像する力を養う」という内容が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「感情を想像する力」に関する記述が全くありません。前半にタイパの説明を入れたため要素①が消えました。",
+            ngFb:"△ 要素①「感情を想像する力」の記述はありません。", pts:0, label:"要素①" },
+          { elemLabel:"要素②", elemCls:"e2", q:"「心を豊かにする深い癒しをもたらす」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「読者の心を豊かにする深い癒し」という表現で要素②は取れています。",
+            ngFb:"△ 「心を豊かにする深い癒し」という表現があります。要素②は含まれています。", pts:4, label:"要素②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「意義を説明せよ」に対して「〜から。」「〜ため。」の形になっているか？",
+            correct:false,
+            okFb:"✕ 「〜になる。」は状態の説明です。理由・意義の答えとしては「〜から。」「〜ため。」に変える必要があります。",
+            ngFb:"○ 「〜になる。」は理由・意義の表現としては不十分です。", pts:0, label:"文末" }
+        ],
+        disease:"要素の片落ち（後半のみ）",
+        totalScore:"4点", scoreClass:"low",
+        advice:"「確かに〜しかし」という逆接構造に引っ張られ、タイパ側の説明に字数を使ってしまいました。「しかし」より後が筆者の主張です。「しかし以降だけ」を答えの材料にする習慣をつけましょう。"
+      }
+    ],
+    scoringIntro:"この問題の採点シートには、3つの基準があります。どれも本文の中に根拠がある内容です。",
+    criteria:[
+      { pts:"+4", label:"要素①", text:"「他者の複雑な感情を想像する力を養う」という内容", isRule:false },
+      { pts:"+4", label:"要素②", text:"「心を豊かにする深い癒しをもたらす」という内容", isRule:false },
+      { pts:"+2", label:"文末形式", text:"意義・理由を問われているので「〜から。」「〜ため。」で結ぶこと", isRule:true }
+    ],
+    modelAnswer:"他者の複雑な感情を想像する力を養うとともに、読者の心を豊かにする深い癒しをもたらしてくれるから。",
+    modelChars:"48字",
+    modelElems:[
+      { tag:"e1", label:"要素①＋4点", text:"「他者の複雑な感情を想像する力を養う」" },
+      { tag:"e2", label:"要素②＋4点", text:"「読者の心を豊かにする深い癒しをもたらす」" },
+      { tag:"er", label:"文末＋2点",   text:"「〜から。」で意義・理由の形式を満たす" }
+    ],
+    summaryTitle:"この問題から学ぶ3つのルール",
+    summaryRules:[
+      "設問を読んだらまず「要素は何個か」を数える",
+      "「確かに〜しかし」→ しかし以降のみが筆者の主張",
+      "「意義・理由を答えよ」→ 文末は必ず「〜から。」「〜ため。」"
+    ]
+  },
+
+  {
+    wall:"WALL 01", wallLabel:"形式の壁",
+    theme:"科学技術と環境問題",
+    passage:`科学技術の進歩は、私たちの生活を豊かにしてきた。しかし同時に、大量消費・大量廃棄の文化を生み出し、地球環境に深刻なダメージを与えてきた側面もある。\n　筆者は、技術の進歩そのものを否定するのではなく、「技術を使う人間の価値観」を変えることこそが、環境問題解決の本質だと主張する。どれほど優れた環境技術が開発されても、使う側の意識が変わらなければ、問題の根本的な解決にはならないからだ。`,
+    question:"筆者が考える環境問題解決の「本質」とは何か。40字以内で説明せよ。",
+    score:"配点：8点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"科学技術の進歩によって環境問題が起きているので、技術の進歩を止めること。",
+        chars:"36字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「技術を使う人間の価値観を変える」という筆者の主張が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「技術の進歩を止める」は筆者の主張と真逆です。「技術の進歩そのものを否定するのではなく」と明記されています。",
+            ngFb:"△ 「技術を使う人間の価値観」という内容は書かれていません。", pts:0, label:"内容" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「〜こと。」など、説明問題にふさわしい文末になっているか？",
+            correct:true,
+            okFb:"○ 正解！「〜こと。」は説明問題の文末として正しい形式です。",
+            ngFb:"△ 「〜こと。」は使える文末です。", pts:1, label:"文末" }
+        ],
+        disease:"本文と正反対の内容を書く「逆読みミス」",
+        totalScore:"1点", scoreClass:"low",
+        advice:"「しかし」「ではなく」などの否定・逆接を読み飛ばすと、筆者の主張と逆の内容を書いてしまいます。「〜ではなく、〜が大切」という構造のときは、後半だけが主張です。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"どれほど優れた環境技術が開発されても、使う側の意識が変わらなければ解決しないから。",
+        chars:"41字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「技術を使う人間の価値観を変える」という筆者の主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「使う側の意識が変わらなければ解決しない」という形で、価値観の変容の重要性が伝わっています。",
+            ngFb:"△ 「使う側の意識」という表現があります。内容は含まれています。", pts:6, label:"内容" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「説明せよ」に対して「〜から。」ではなく「〜こと。」などになっているか？",
+            correct:false,
+            okFb:"✕ 惜しい！「〜から。」は理由専用の文末です。「説明せよ」には「〜こと。」「〜という点。」が適切です。",
+            ngFb:"○ 正解！「〜から。」は「説明せよ」の文末としては不適切。「〜こと。」に変えましょう。", pts:0, label:"文末" }
+        ],
+        disease:"「説明せよ」に「から。」で終わる文末ミス",
+        totalScore:"6点", scoreClass:"mid",
+        advice:"「理由を答えよ」→「〜から。」、「説明せよ」→「〜こと。」という使い分けを覚えましょう。この2点の差で合否が分かれることがあります。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"技術を使う人間の価値観を変えることが環境問題解決の本質であること。",
+        chars:"33字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「技術を使う人間の価値観を変える」という筆者の主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！本文の表現をほぼそのまま使って正確に押さえています。",
+            ngFb:"△ 「価値観を変えること」という記述があります。内容は含まれています。", pts:6, label:"内容" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「説明せよ」に対して「〜こと。」などの適切な文末になっているか？",
+            correct:true,
+            okFb:"○ 正解！「〜こと。」は「説明せよ」の文末として正しい形式です。",
+            ngFb:"△ 「〜こと。」は説明問題の文末として使えます。", pts:2, label:"文末" }
+        ],
+        disease:"（ほぼ正解！）字数の余裕あり",
+        totalScore:"8点（満点）", scoreClass:"high",
+        advice:"内容・文末ともに正しい。「技術を使う人間の価値観を変えることが本質」という表現は完璧です。字数に余裕があれば「意識が変わらなければ解決しない」という理由も加えるとより充実します。"
+      }
+    ],
+    scoringIntro:"「本質とは何か」という問いです。本文で「〜ではなく、〜こそが本質だ」という構造を探すのが鍵です。",
+    criteria:[
+      { pts:"+6", label:"内容", text:"「技術を使う人間の価値観（意識）を変えること」が書かれているか", isRule:false },
+      { pts:"+2", label:"文末形式", text:"「説明せよ」→ 文末は「〜こと。」「〜という点。」（「〜から。」は不可）", isRule:true }
+    ],
+    modelAnswer:"技術を使う人間の価値観を変えることが本質であり、意識が変わらなければ根本的な解決にはならないこと。",
+    modelChars:"48字",
+    modelElems:[
+      { tag:"e1", label:"内容＋6点",  text:"「技術を使う人間の価値観を変えること」" },
+      { tag:"er", label:"文末＋2点",  text:"「〜こと。」で説明問題の形式を満たす" }
+    ],
+    summaryTitle:"この問題から学ぶ2つのルール",
+    summaryRules:[
+      "「〜ではなく、〜こそが大切」→ 後半だけが筆者の主張",
+      "「説明せよ」の文末は「〜こと。」。「〜から。」は理由専用"
+    ]
+  },
+
+  /* ── WALL 02 的外れの壁 ── */
+  {
+    wall:"WALL 02", wallLabel:"的外れの壁",
+    theme:"都市集中と地方移住",
+    passage:`近年、都市部への人口集中が続く一方で、地方では過疎化が深刻な問題となっている。政府は交通インフラの整備やテレワーク推進を通じて地方移住を促進しようとしているが、移住希望者が地方に求めるものと、地方自治体が提供できるものとの間には、いまだ大きなギャップが存在している。\n　この問題を解決するためには、地方側が一方的に「来てほしい」と訴えるだけでなく、移住希望者のニーズを丁寧に把握し、それに応じた受け入れ体制を整えることが不可欠である。`,
+    question:"筆者が地方移住促進の課題として指摘していることを、50字以内で説明せよ。",
+    score:"配点：10点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"都市部への人口集中が続いているのに対して、地方では過疎化が深刻な問題となっているということ。",
+        chars:"45字",
+        judges:[
+          { elemLabel:"要素①", elemCls:"e1", q:"「ニーズと提供できるものとのギャップ」が課題として書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「ギャップ」の記述がありません。書かれているのは「人口集中・過疎化」という現象であり、筆者が指摘する「課題」ではありません。",
+            ngFb:"△ ギャップに関する記述はありません。", pts:0, label:"要素①" },
+          { elemLabel:"要素②", elemCls:"e2", q:"「一方的に訴えるだけでは不十分」が課題として書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！要素②も書かれていません。第1段落だけを読んで書いたため、第2段落の筆者の主張が丸ごと抜けています。",
+            ngFb:"△ 要素②の記述もありません。", pts:0, label:"要素②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「〜こと。」「〜という点。」など、課題説明にふさわしい文末になっているか？",
+            correct:true,
+            okFb:"○ 正解！「〜ということ。」は形式として使えます。内容が伴っていれば形式点を得られます。",
+            ngFb:"△ 「〜ということ。」は課題説明の文末として使えます。", pts:2, label:"文末" }
+        ],
+        disease:"問いの主語のすり替え（現象を書いた）",
+        totalScore:"2点", scoreClass:"low",
+        advice:"本文の第1段落だけ読んで書いた典型パターンです。筆者が「課題として指摘する」内容は第2段落以降にあります。「不可欠である」「重要だ」という強調語の直前を探す習慣をつけましょう。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"移住希望者のニーズと地方の受け入れ体制にギャップがあることで、地方側が呼びかけるだけでは不十分だから。",
+        chars:"50字",
+        judges:[
+          { elemLabel:"要素①", elemCls:"e1", q:"「ニーズと提供できるものとのギャップ」が課題として書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「ニーズと受け入れ体制にギャップがある」と明記されており要素①を満たしています。",
+            ngFb:"△ 「ニーズとギャップ」という記述があります。要素①は含まれています。", pts:5, label:"要素①" },
+          { elemLabel:"要素②", elemCls:"e2", q:"「一方的に訴えるだけでは不十分」が課題として書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「呼びかけるだけでは不十分」と明記されており要素②も満たしています。",
+            ngFb:"△ 「呼びかけるだけでは不十分」という記述があります。要素②は含まれています。", pts:3, label:"要素②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「説明せよ」に対して文末が「〜こと。」などになっているか？（「〜から。」は不可）",
+            correct:false,
+            okFb:"✕ 惜しい！「〜だから。」は「理由を述べよ」の文末です。「課題を説明せよ」には「〜こと。」「〜という点。」が正しい。",
+            ngFb:"○ 正解！「〜だから。」は「説明せよ」の文末としては不適切。「〜こと。」に変えましょう。", pts:0, label:"文末" }
+        ],
+        disease:"「から。」と「こと。」の混同",
+        totalScore:"8点", scoreClass:"high",
+        advice:"要素の把握は完璧です。「説明せよ」→「〜こと。」、「理由を述べよ」→「〜から。」という使い分けを覚えるだけで、この2点を確実に取れます。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"政府の交通インフラ整備やテレワーク推進だけでは、移住希望者を十分に呼び込めていないこと。",
+        chars:"44字",
+        judges:[
+          { elemLabel:"要素①", elemCls:"e1", q:"「ニーズと提供できるものとのギャップ」が課題として書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「インフラ整備・テレワーク推進」は政府の施策（手段）であり、筆者が指摘する「ギャップ」という課題ではありません。",
+            ngFb:"△ 施策の説明はありますが、ニーズとのギャップという課題は書かれていません。", pts:0, label:"要素①" },
+          { elemLabel:"要素②", elemCls:"e2", q:"「一方的に訴えるだけでは不十分」が課題として書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！要素②も含まれていません。「呼び込めていない」という結果は書かれていますが、筆者の指摘する「訴えるだけでは不十分」という課題とは異なります。",
+            ngFb:"△ 要素②の記述もありません。", pts:0, label:"要素②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「〜こと。」など、課題説明にふさわしい文末になっているか？",
+            correct:true,
+            okFb:"○ 「〜こと。」の文末形式は正しいです。",
+            ngFb:"△ 「〜こと。」は課題説明として使える文末です。", pts:2, label:"文末" }
+        ],
+        disease:"手段と課題の混同",
+        totalScore:"3点", scoreClass:"low",
+        advice:"「政府の施策（手段）」と「筆者が指摘する課題」は別物です。施策は課題に対する解決策であり、課題そのものではありません。「〜が問題である」「〜が不可欠だ」という表現の直前に課題が書かれています。"
+      }
+    ],
+    scoringIntro:"「筆者が指摘する課題」を聞いています。現状説明・施策の紹介・解決策はどれも「課題」ではありません。",
+    criteria:[
+      { pts:"+5", label:"要素①", text:"移住希望者のニーズと地方が提供できるものとの「ギャップ」が存在するという課題", isRule:false },
+      { pts:"+3", label:"要素②", text:"地方が一方的に「来てほしい」と訴えるだけでは不十分という課題", isRule:false },
+      { pts:"+2", label:"文末形式", text:"「課題を説明せよ」→ 文末は「〜こと。」「〜という点。」が適切", isRule:true }
+    ],
+    modelAnswer:"移住希望者のニーズと地方が提供できるものとの間にギャップがあり、地方が一方的に訴えるだけでは不十分なこと。",
+    modelChars:"53字（要素①のみでも5点以上取れる）",
+    modelElems:[
+      { tag:"e1", label:"要素①＋5点", text:"「ニーズと提供できるものとのギャップ」が課題" },
+      { tag:"e2", label:"要素②＋3点", text:"「一方的に訴えるだけでは不十分」という現状" },
+      { tag:"er", label:"文末＋2点",   text:"「〜こと。」で課題説明の形式を満たす" }
+    ],
+    summaryTitle:"この問題から学ぶ3つのルール",
+    summaryRules:[
+      "「筆者の課題」は「不可欠である」「重要だ」などの強調語の直前にある",
+      "施策（手段）と課題を混同しない——施策は課題への「解決策」",
+      "「説明せよ」の文末は「〜こと。」。「〜から。」は理由専用"
+    ]
+  },
+
+  {
+    wall:"WALL 02", wallLabel:"的外れの壁",
+    theme:"読書と語彙力",
+    passage:`語彙力が低下していると言われる現代の子どもたちに、多くの教育者は読書を勧める。確かに、読書は語彙力を高める効果がある。しかし、どんな本でもよいわけではない。\n　筆者は、語彙力向上に最も効果的なのは「自分のレベルより少し難しい本」を読むことだと主張する。簡単すぎる本ばかりでは既知の語彙を確認するだけにとどまり、適度に難しい本を読むことで初めて「わからない言葉を文脈から推測する力」が育つからである。`,
+    question:"筆者が語彙力向上に最も効果的だと主張することを、40字以内で答えなさい。",
+    score:"配点：8点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"たくさんの本を読み、読書の習慣をつけること。",
+        chars:"22字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「自分のレベルより少し難しい本を読む」という筆者の主張が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「たくさん読む」は筆者の主張ではありません。「どんな本でもよいわけではない」と明記されており、「難しい本」という条件が主張の核心です。",
+            ngFb:"△ 「たくさん読む」という内容は書かれていますが、「少し難しい本」という条件が含まれていません。", pts:0, label:"内容" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「〜こと。」など、答えにふさわしい文末になっているか？",
+            correct:true,
+            okFb:"○ 正解！文末形式は正しいです。",
+            ngFb:"△ 文末形式は使えます。", pts:1, label:"文末" }
+        ],
+        disease:"条件の読み落とし（難しさの条件が抜ける）",
+        totalScore:"1点", scoreClass:"low",
+        advice:"筆者の主張の核心は「どんな本でもよいわけではなく、少し難しい本が良い」という点です。「読書が大事」という一般論ではなく、筆者が強調している条件・限定をきちんと拾いましょう。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"自分のレベルより少し難しい本を読み、わからない言葉を文脈から推測する力を育てること。",
+        chars:"41字",
+        judges:[
+          { elemLabel:"内容（主張）", elemCls:"e1", q:"「自分のレベルより少し難しい本を読む」という主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「少し難しい本を読む」という主張の核心を押さえています。",
+            ngFb:"△ 「少し難しい本を読む」という記述があります。", pts:4, label:"内容①" },
+          { elemLabel:"内容（効果）", elemCls:"e2", q:"「文脈から推測する力が育つ」という効果も書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「わからない言葉を文脈から推測する力を育てる」という効果も正確に含まれています。",
+            ngFb:"△ 「文脈から推測する力」という記述があります。", pts:3, label:"内容②" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「〜こと。」など、ふさわしい文末になっているか？",
+            correct:true,
+            okFb:"○ 正解！文末形式も正しいです。",
+            ngFb:"△ 文末形式は使えます。", pts:1, label:"文末" }
+        ],
+        disease:"（満点！）完璧な答案",
+        totalScore:"8点（満点）", scoreClass:"high",
+        advice:"主張（少し難しい本を読む）と効果（推測する力が育つ）の両方を40字以内に収められています。このバランスが理想的な答案です。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"語彙力向上には読書が有効であり、特に難しい本を読むことが効果的であるから。",
+        chars:"37字",
+        judges:[
+          { elemLabel:"内容（主張）", elemCls:"e1", q:"「自分のレベルより少し難しい本」という具体的な条件が書かれているか？",
+            correct:false,
+            okFb:"✕ 惜しい！「難しい本」とは書かれていますが、「自分のレベルより少し」という条件が抜けています。この「少し」という限定が筆者の主張の肝です。",
+            ngFb:"△ 「難しい本」という記述はありますが、「少し」という条件が抜けています。", pts:2, label:"内容" },
+          { elemLabel:"文末形式", elemCls:"er", q:"「答えなさい」という設問に対して「〜こと。」などの文末になっているか？（「〜から。」は不可）",
+            correct:false,
+            okFb:"✕ 「〜であるから。」は理由の文末です。「答えなさい」という設問には「〜こと。」が適切です。",
+            ngFb:"○ 正解！「〜であるから。」は理由文末で、この設問には不適切です。", pts:0, label:"文末" }
+        ],
+        disease:"条件の不足＋文末ミスの複合",
+        totalScore:"2点", scoreClass:"low",
+        advice:"「難しい本」という方向は正しいですが、「自分のレベルより少し」という限定が抜けています。筆者の主張の中で「数値・程度・条件」に当たる言葉は正確に引き継ぎましょう。"
+      }
+    ],
+    scoringIntro:"「筆者が主張すること」を問われています。一般論や常識ではなく、本文に書かれている筆者の具体的な主張を拾うことが大切です。",
+    criteria:[
+      { pts:"+4", label:"内容①", text:"「自分のレベルより少し難しい本を読む」という主張", isRule:false },
+      { pts:"+3", label:"内容②", text:"「文脈からわからない言葉を推測する力が育つ」という効果", isRule:false },
+      { pts:"+1", label:"文末形式", text:"「答えなさい」→ 文末は「〜こと。」（「〜から。」は不可）", isRule:true }
+    ],
+    modelAnswer:"自分のレベルより少し難しい本を読み、わからない言葉を文脈から推測する力を育てること。",
+    modelChars:"41字",
+    modelElems:[
+      { tag:"e1", label:"内容①＋4点", text:"「自分のレベルより少し難しい本を読む」" },
+      { tag:"e2", label:"内容②＋3点", text:"「文脈から推測する力を育てる」" },
+      { tag:"er", label:"文末＋1点",   text:"「〜こと。」で答えの形式を満たす" }
+    ],
+    summaryTitle:"この問題から学ぶ2つのルール",
+    summaryRules:[
+      "筆者の主張に含まれる「条件・程度・限定」の言葉を正確に引き継ぐ",
+      "一般論（読書は大事）ではなく、本文の具体的な主張だけを答える"
+    ]
+  },
+
+  /* ── WALL 03 部分点の壁 ── */
+  {
+    wall:"WALL 03", wallLabel:"部分点の壁",
+    theme:"人工知能と人間の役割",
+    passage:`人工知能の発展により、これまで人間が担ってきた多くの仕事が自動化されつつある。データ処理や単純作業はもとより、医療診断や法律の文書作成など、専門的な分野にまでその影響は及んでいる。\n　しかし、AIが得意とするのは大量のデータから「パターン」を学ぶことであり、前例のない問題に対して「価値判断」を伴う決断を下すことや、他者の感情に寄り添いながら関係を築く「共感」の力は、依然として人間固有の領域である。`,
+    question:"筆者が考える「人間固有の能力」を二つ挙げ、それぞれ15字以内で説明せよ。（配点各5点）",
+    score:"配点：10点（各5点×2）",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"①前例のない問題に価値判断を伴う決断をする力。②AIが不得意なことを意識的に伸ばす力。",
+        chars:"44字",
+        judges:[
+          { elemLabel:"能力①", elemCls:"e1", q:"①「価値判断を伴う決断力」が15字以内で正確に書かれているか？",
+            correct:true,
+            okFb:"○ 正解！①「価値判断を伴う決断をする力」は本文に即した正確な説明です。",
+            ngFb:"△ ①「価値判断を伴う決断をする力」と書かれており、能力①は含まれています。", pts:5, label:"能力①" },
+          { elemLabel:"能力②", elemCls:"e2", q:"②「共感の力・関係を築く力」が15字以内で正確に書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！②が「AIが不得意なことを伸ばす力」になっています。これは筆者の提言であり、「人間固有の能力」の説明ではありません。「共感・関係を築く力」が②の正解です。",
+            ngFb:"△ ②は「AIが不得意なことを伸ばす力」と書かれており、人間固有の能力の説明になっていません。", pts:0, label:"能力②" }
+        ],
+        disease:"要素②のすり替え（提言を能力として書く）",
+        totalScore:"5点", scoreClass:"mid",
+        advice:"②で「筆者の提言」を「人間固有の能力」として書いてしまっています。設問が聞いているのは本文で列挙された「共感」「関係を築く力」です。「筆者の主張」と「本文の具体的な概念」を区別して読む習慣をつけましょう。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"①価値判断を伴う決断力（13字）②他者に共感し関係を築く力（14字）",
+        chars:"各15字以内",
+        judges:[
+          { elemLabel:"能力①", elemCls:"e1", q:"①「価値判断を伴う決断力」が15字以内で正確に書かれているか？",
+            correct:true,
+            okFb:"○ 正解！13字でクリア。内容・字数ともに完璧です。",
+            ngFb:"△ ①は13字で15字以内に収まっており、内容も正確です。", pts:5, label:"能力①" },
+          { elemLabel:"能力②", elemCls:"e2", q:"②「共感の力・関係を築く力」が15字以内で正確に書かれているか？",
+            correct:true,
+            okFb:"○ 正解！14字でクリア。①②ともに完璧な答案です。",
+            ngFb:"△ ②は14字で15字以内に収まっており、内容も正確です。", pts:5, label:"能力②" }
+        ],
+        disease:"（満点！）理想の答案",
+        totalScore:"10点", scoreClass:"high",
+        advice:"①②を番号で分け、それぞれ自分で字数を数えて制限内に収める。この形式をそのまま真似してください。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"AIは大量のデータからパターンを学ぶのが得意だが、価値判断や共感は人間にしかできないということ。",
+        chars:"47字",
+        judges:[
+          { elemLabel:"能力①", elemCls:"e1", q:"①「価値判断を伴う決断力」が15字以内で独立して書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「価値判断」という語はありますが、①②が一文にまとめられており「それぞれ15字以内」という形式を満たしていません。",
+            ngFb:"△ 「価値判断」の語はありますが、①として独立した説明になっていません。", pts:0, label:"能力①" },
+          { elemLabel:"能力②", elemCls:"e2", q:"②「共感の力・関係を築く力」が15字以内で独立して書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「共感」という語はありますが、①②が一文にまとめられているため「それぞれ15字以内」という形式指定を満たしていません。",
+            ngFb:"△ 「共感」の語はありますが、②として独立した説明になっていません。", pts:0, label:"能力②" }
+        ],
+        disease:"二つを一文に溶かした混在",
+        totalScore:"3点（語句への部分点のみ）", scoreClass:"low",
+        advice:"「二つ挙げよ」という設問を「まとめて一文でよい」と読み違えた典型パターンです。設問に形式の指定がある場合（「それぞれ〜字以内」など）は、その形式に従わないと内容が正しくても減点されます。"
+      }
+    ],
+    scoringIntro:"「二つ挙げよ」は採点者が①②それぞれに点を入れます。どちらか片方だけでは最大5点止まりです。「それぞれ15字以内」という字数制限も採点基準の一部です。",
+    criteria:[
+      { pts:"+5", label:"能力①", text:"前例のない問題への「価値判断を伴う決断力」（15字以内で明示）", isRule:false },
+      { pts:"+5", label:"能力②", text:"他者に寄り添う「共感の力・関係を築く力」（15字以内で明示）", isRule:false },
+      { pts:"注意", label:"形式", text:"①②を分けて番号で明示すること。一文にまとめると採点者が識別できず大幅減点", isRule:true }
+    ],
+    modelAnswer:"①価値判断を伴う決断力（13字） ②他者に共感し関係を築く力（14字）",
+    modelChars:"①13字 ②14字（いずれも15字以内）",
+    modelElems:[
+      { tag:"e1", label:"能力①＋5点", text:"「価値判断を伴う決断力」——前例のない問題への判断" },
+      { tag:"e2", label:"能力②＋5点", text:"「他者に共感し関係を築く力」——感情的寄り添いと関係形成" },
+      { tag:"er", label:"形式",         text:"①②と番号を振り、それぞれ15字以内に収める" }
+    ],
+    summaryTitle:"この問題から学ぶ3つのルール",
+    summaryRules:[
+      "「二つ挙げよ」→ ①②と番号を振る。採点者は要素ごとに点を入れる",
+      "字数制限は自分で数えて、必要なら解答中に字数を書き込む",
+      "筆者の「提言」と「本文で列挙された概念」を混同しない"
+    ]
+  },
+
+  {
+    wall:"WALL 03", wallLabel:"部分点の壁",
+    theme:"ボランティア活動と社会",
+    passage:`地域のボランティア活動に参加することは、個人にとって多くの恩恵をもたらす。まず、他者のために働くことで、自己中心的な思考から抜け出し、社会への貢献意識が育まれる。さらに、活動を通じて地域の人々とつながり、孤立しがちな現代社会において、人間関係の豊かさを取り戻すきっかけにもなる。`,
+    question:"筆者が述べるボランティア活動の意義を二点答えなさい。",
+    score:"配点：10点（各5点×2）",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"ボランティア活動は地域社会にとって大切であり、誰もが参加すべきものだということ。",
+        chars:"40字",
+        judges:[
+          { elemLabel:"意義①", elemCls:"e1", q:"「社会への貢献意識が育まれる」という意義①が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「社会への貢献意識が育まれる」という記述がありません。「大切であり参加すべき」は一般論であり、本文の具体的な意義ではありません。",
+            ngFb:"△ 意義①の具体的な内容が書かれていません。", pts:0, label:"意義①" },
+          { elemLabel:"意義②", elemCls:"e2", q:"「人間関係の豊かさを取り戻すきっかけになる」という意義②が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！意義②も全くありません。この答案は本文の主張ではなく、自分の考えを書いてしまっています。",
+            ngFb:"△ 意義②の具体的な内容も書かれていません。", pts:0, label:"意義②" }
+        ],
+        disease:"本文を読まずに「自分の意見」を書いた",
+        totalScore:"0点", scoreClass:"low",
+        advice:"記述問題の答えは、必ず本文の中から根拠を見つけて書きます。「自分が思う大切さ」ではなく、「筆者が本文の中で述べていること」を探す習慣をつけましょう。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"①社会への貢献意識が育まれること。②地域の人々とのつながりを通じ、人間関係の豊かさを取り戻すきっかけになること。",
+        chars:"57字",
+        judges:[
+          { elemLabel:"意義①", elemCls:"e1", q:"「社会への貢献意識が育まれる」という意義①が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！意義①を正確に押さえています。",
+            ngFb:"△ 意義①「社会への貢献意識が育まれる」は含まれています。", pts:5, label:"意義①" },
+          { elemLabel:"意義②", elemCls:"e2", q:"「人間関係の豊かさを取り戻すきっかけになる」という意義②が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！意義②も正確に押さえています。①②ともに完璧です。",
+            ngFb:"△ 意義②も含まれています。", pts:5, label:"意義②" }
+        ],
+        disease:"（満点！）理想の答案",
+        totalScore:"10点", scoreClass:"high",
+        advice:"①②を明確に分け、本文の言葉をうまく使って両方の意義を書けています。「二点答えなさい」という設問では、このようにナンバリングして答えるのが最も安全です。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"ボランティア活動を通じて貢献意識が育まれ、地域の人々とつながることができること。",
+        chars:"40字",
+        judges:[
+          { elemLabel:"意義①", elemCls:"e1", q:"「社会への貢献意識が育まれる」という意義①が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！「貢献意識が育まれ」と書かれており、意義①は含まれています。",
+            ngFb:"△ 「貢献意識が育まれ」という記述があります。意義①は含まれています。", pts:5, label:"意義①" },
+          { elemLabel:"意義②", elemCls:"e2", q:"「人間関係の豊かさを取り戻すきっかけになる」という意義②が書かれているか？",
+            correct:false,
+            okFb:"✕ 惜しい！「地域の人々とつながる」とは書かれていますが、「人間関係の豊かさを取り戻すきっかけ」という核心の効果が抜けています。",
+            ngFb:"△ 「つながる」という語はありますが、「人間関係の豊かさを取り戻すきっかけ」という意義②の核心が抜けています。", pts:2, label:"意義②" }
+        ],
+        disease:"意義②の核心が薄い（要素不足）",
+        totalScore:"7点", scoreClass:"mid",
+        advice:"「つながる」という行動だけを書いており、その結果として「人間関係の豊かさを取り戻す」という効果が書かれていません。本文に書かれた意義は「行動」ではなく「その結果もたらされるもの」として書くとより完璧になります。"
+      }
+    ],
+    scoringIntro:"「意義を二点答えなさい」という問いです。採点者は①と②を別々に採点します。どちらか片方だけでは最大5点止まりです。",
+    criteria:[
+      { pts:"+5", label:"意義①", text:"他者のために働くことで「社会への貢献意識が育まれる」", isRule:false },
+      { pts:"+5", label:"意義②", text:"地域の人々とつながり「人間関係の豊かさを取り戻すきっかけになる」", isRule:false }
+    ],
+    modelAnswer:"①社会への貢献意識が育まれること。②地域の人々とつながることで、人間関係の豊かさを取り戻すきっかけになること。",
+    modelChars:"両意義を①②で明示",
+    modelElems:[
+      { tag:"e1", label:"意義①＋5点", text:"「社会への貢献意識が育まれる」" },
+      { tag:"e2", label:"意義②＋5点", text:"「地域の人々とつながり、人間関係の豊かさを取り戻すきっかけになる」" }
+    ],
+    summaryTitle:"この問題から学ぶ2つのルール",
+    summaryRules:[
+      "「行動」だけでなく「その行動がもたらす効果・結果」まで書くこと",
+      "本文に書かれていない「自分の意見・一般論」は0点になる"
+    ]
+  },
+
+  /* ── WALL 04 文字数の壁 ── */
+  {
+    wall:"WALL 04", wallLabel:"文字数の壁",
+    theme:"情報技術と個人情報",
+    passage:`スマートフォンやSNSの普及により、私たちは毎日膨大な量の個人情報をインターネット上に残している。位置情報、購買履歴、検索ワード——これらは企業によって収集・分析され、広告やサービスの最適化に利用されている。\n　こうした状況に対し、筆者は「データリテラシー」の重要性を訴える。自分のデータがどのように使われているかを理解し、必要に応じて提供を制限する能力を持つことが、デジタル社会を主体的に生きるための必須条件だと主張する。`,
+    question:"筆者が主張する「データリテラシー」の意味を、30字以内で説明せよ。",
+    score:"配点：8点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"自分のデータがどのように使われているかを理解し、提供を制限する能力を持つことで、デジタル社会を主体的に生きること。",
+        chars:"57字（オーバー）",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「データの使われ方を理解し、提供を制限する能力」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！内容は完璧に押さえています。しかし問題は字数です。",
+            ngFb:"△ 内容は正しいですが、字数の問題があります。", pts:5, label:"内容" },
+          { elemLabel:"字数制限", elemCls:"er", q:"30字以内に収まっているか？",
+            correct:false,
+            okFb:"✕ 正解！57字で大幅にオーバーしています。「デジタル社会を主体的に生きること」は設問で問われていない部分です。削って30字以内に圧縮する必要があります。",
+            ngFb:"△ 30字以内を大幅にオーバーしています。", pts:0, label:"字数" }
+        ],
+        disease:"字数オーバー（削る箇所がわからない）",
+        totalScore:"5点", scoreClass:"mid",
+        advice:"内容は正しいのに字数オーバーは非常にもったいない失点です。圧縮のコツは「設問で問われていない部分を削る」こと。「デジタル社会を主体的に生きること」は「目的」であり、「データリテラシーの意味」ではないため削れます。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"自分のデータの使われ方を理解し、必要に応じて提供を制限する能力。",
+        chars:"32字（2字オーバー）",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「データの使われ方を理解し、提供を制限する能力」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！内容は完璧です。あとは字数の問題です。",
+            ngFb:"△ 内容は正しいです。", pts:5, label:"内容" },
+          { elemLabel:"字数制限", elemCls:"er", q:"30字以内に収まっているか？",
+            correct:false,
+            okFb:"✕ 惜しい！32字で2字オーバーです。「必要に応じて」を削るか、「能力」→「力」に変えるなど、あと2字削る工夫が必要です。",
+            ngFb:"○ 正解！30字以内を2字オーバーしています。わずかですが減点対象です。", pts:0, label:"字数" }
+        ],
+        disease:"あと2字の詰めが甘い",
+        totalScore:"5点", scoreClass:"mid",
+        advice:"「必要に応じて」を削って「提供を制限する能力」にすると30字以内に収まります。字数制限ギリギリのときは「修飾語・副詞」から削るのが基本です。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"データの使われ方を理解し提供を制限できる力。",
+        chars:"22字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「データの使われ方を理解し、提供を制限する能力」という内容が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！22字にコンパクトに圧縮しながら内容も正確に押さえています。",
+            ngFb:"△ 内容は正しいです。", pts:6, label:"内容" },
+          { elemLabel:"字数制限", elemCls:"er", q:"30字以内に収まっているか？",
+            correct:true,
+            okFb:"○ 正解！22字で30字以内にしっかり収まっています。",
+            ngFb:"△ 22字で30字以内に収まっています。", pts:2, label:"字数" }
+        ],
+        disease:"（ほぼ満点！）換言・圧縮が上手い",
+        totalScore:"8点（満点）", scoreClass:"high",
+        advice:"字数を削りながら意味を保つ圧縮が上手くできています。「能力」→「力」「理解し」の短縮など、言い換えのセンスが光っています。"
+      }
+    ],
+    scoringIntro:"「30字以内で説明せよ」という字数制限付きの問いです。内容が正しくても字数オーバーは減点になります。何を削れるかを考えましょう。",
+    criteria:[
+      { pts:"+6", label:"内容", text:"「自分のデータの使われ方を理解し、提供を制限する能力」という内容", isRule:false },
+      { pts:"+2", label:"字数", text:"30字以内に収まっているか（オーバーは大幅減点）", isRule:true }
+    ],
+    modelAnswer:"データの使われ方を理解し、提供を制限できる力。",
+    modelChars:"22字",
+    modelElems:[
+      { tag:"e1", label:"内容＋6点", text:"「使われ方を理解し、提供を制限する」という核心を含む" },
+      { tag:"er", label:"字数＋2点", text:"30字以内に収まっている" }
+    ],
+    summaryTitle:"この問題から学ぶ2つのルール",
+    summaryRules:[
+      "字数制限がある問いは「削れる言葉」を先に探してから書く",
+      "削る優先順位：副詞・修飾語 → 目的語の重複 → 接続語"
+    ]
+  },
+
+  {
+    wall:"WALL 04", wallLabel:"文字数の壁",
+    theme:"少子化と社会制度",
+    passage:`少子化が進む日本では、社会保障制度の維持が困難になりつつある。年金や医療費を支える現役世代の数が減少しているにもかかわらず、高齢者人口は増加を続けているからだ。\n　この問題に対して筆者は、単に出生率を上げようとするだけでなく、高齢者や女性・外国人が活躍できる社会を構築し、「支える側」の人数を増やすことが現実的な解決策だと主張する。`,
+    question:"筆者が主張する少子化への「現実的な解決策」を45字以内で説明せよ。",
+    score:"配点：8点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"出生率を上げ、子どもの数を増やすことで少子化問題を解決すること。",
+        chars:"32字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「高齢者・女性・外国人が活躍できる社会を構築し、支える側を増やす」という主張が書かれているか？",
+            correct:false,
+            okFb:"✕ 正解！「出生率を上げる」は本文で「単にそれだけでなく」と否定された方法です。筆者の主張はその後の「支える側を増やす」という点にあります。",
+            ngFb:"△ 「出生率を上げる」は筆者が「単にそれだけでなく」と言っている方向です。筆者の主張の核心は別にあります。", pts:0, label:"内容" }
+        ],
+        disease:"「〜ではなく」の前を答えた逆読みミス",
+        totalScore:"0点", scoreClass:"low",
+        advice:"「単に〜するだけでなく、〜が大切」という構造では、「だけでなく」の後が筆者の主張です。「〜ではなく」「〜だけでなく」より前の内容を答えてしまうのは典型的なミスです。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"高齢者・女性・外国人が活躍できる社会を構築し、「支える側」の人数を増やすこと。",
+        chars:"40字",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「高齢者・女性・外国人が活躍できる社会を構築し、支える側を増やす」という主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！筆者の主張を正確に押さえており、字数も40字でクリアしています。",
+            ngFb:"△ 内容は正確に押さえられています。", pts:6, label:"内容" },
+          { elemLabel:"字数・文末", elemCls:"er", q:"45字以内に収まっており、「〜こと。」など説明にふさわしい文末になっているか？",
+            correct:true,
+            okFb:"○ 正解！40字で45字以内にも収まっており、「〜こと。」の文末も正しいです。",
+            ngFb:"△ 字数も文末も問題ありません。", pts:2, label:"字数・文末" }
+        ],
+        disease:"（満点！）模範的な答案",
+        totalScore:"8点", scoreClass:"high",
+        advice:"本文の構造（「〜だけでなく、〜が大切」）を正しく読み取り、筆者の主張だけを過不足なく書けています。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"少子化が進む日本において、年金や医療費を支える現役世代を増やすために、高齢者や女性、外国人が活躍できる社会を構築することが現実的であり、そのための政策を整えることが重要だということ。",
+        chars:"93字（大幅オーバー）",
+        judges:[
+          { elemLabel:"内容", elemCls:"e1", q:"「高齢者・女性・外国人が活躍できる社会を構築し、支える側を増やす」という主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！内容は含まれています。しかし問題は大幅な字数オーバーです。",
+            ngFb:"△ 内容は含まれています。", pts:3, label:"内容" },
+          { elemLabel:"字数制限", elemCls:"er", q:"45字以内に収まっているか？",
+            correct:false,
+            okFb:"✕ 正解！93字と倍以上オーバーしています。「少子化が進む日本において」「そのための政策を整えることが重要だ」などは設問の答えに不要な情報です。",
+            ngFb:"○ 正解！93字で大幅オーバーです。設問で問われていない情報を全て削る必要があります。", pts:0, label:"字数" }
+        ],
+        disease:"字数を大幅にオーバー（背景情報を全部書いた）",
+        totalScore:"3点", scoreClass:"low",
+        advice:"答えに不要な「背景説明」と「一般論」を全て削ると、筆者の主張の核心だけが残ります。設問が「何を聞いているか」に絞って答える練習をしましょう。"
+      }
+    ],
+    scoringIntro:"「現実的な解決策」という言葉が本文のどこに書かれているかを探すのがポイントです。「〜だけでなく」の後が筆者の主張です。",
+    criteria:[
+      { pts:"+6", label:"内容", text:"高齢者・女性・外国人が活躍できる社会を構築し、「支える側」の人数を増やすという主張", isRule:false },
+      { pts:"+2", label:"字数・文末", text:"45字以内に収まっており、「〜こと。」「〜ため。」等の適切な文末", isRule:true }
+    ],
+    modelAnswer:"高齢者・女性・外国人が活躍できる社会を構築し、「支える側」の人数を増やすこと。",
+    modelChars:"40字",
+    modelElems:[
+      { tag:"e1", label:"内容＋6点",  text:"「高齢者・女性・外国人が活躍できる社会を構築し、支える側を増やす」" },
+      { tag:"er", label:"字数＋2点",  text:"45字以内に収まっており、「〜こと。」の文末" }
+    ],
+    summaryTitle:"この問題から学ぶ2つのルール",
+    summaryRules:[
+      "「〜だけでなく、〜が大切」→ 後半だけが筆者の「主張」",
+      "背景説明（現状の問題）は答えに書かない——設問で問われていない"
+    ]
+  },
+
+  {
+    wall:"WALL 04", wallLabel:"文字数の壁",
+    theme:"グローバル化と母語教育",
+    passage:`英語教育の低年齢化が進む中、一部の教育者は「幼い頃から英語に多くの時間を使うと、母語である日本語の発達が阻害される」と懸念する。しかし筆者は、この懸念を否定する。\n　言語習得の研究によれば、母語の力がしっかりしていることが外国語習得の基盤になるという。逆に、母語の習得が不十分なまま外国語を学ぼうとしても、思考の深さや表現の豊かさが育ちにくいのだ。筆者は、英語と日本語を対立させるのではなく、日本語の豊かな表現力を育てることが英語力向上にもつながると主張する。`,
+    question:"筆者の主張を、「母語」と「英語力」という二語を使って40字以内でまとめなさい。",
+    score:"配点：8点",
+    wrongAnswers:[
+      {
+        name:"Aさん", cls:"a",
+        text:"英語教育の低年齢化が進む中で、母語の習得を大切にすることが英語力の向上につながるということ。",
+        chars:"46字（オーバー）",
+        judges:[
+          { elemLabel:"二語の使用", elemCls:"e1", q:"「母語」と「英語力」という指定の二語が両方使われているか？",
+            correct:true,
+            okFb:"○ 正解！指定の二語「母語」「英語力」が両方使われています。",
+            ngFb:"△ 二語は使われています。", pts:2, label:"二語" },
+          { elemLabel:"内容", elemCls:"e2", q:"「母語の豊かな表現力を育てることが英語力向上につながる」という主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！内容の方向性は正しいです。",
+            ngFb:"△ 内容は含まれています。", pts:4, label:"内容" },
+          { elemLabel:"字数", elemCls:"er", q:"40字以内に収まっているか？",
+            correct:false,
+            okFb:"✕ 正解！46字で6字オーバーです。「英語教育の低年齢化が進む中で」という背景説明が余計です。これを削るだけで40字以内に収まります。",
+            ngFb:"○ 正解！46字で40字以内をオーバーしています。", pts:0, label:"字数" }
+        ],
+        disease:"背景説明を冒頭に入れて字数オーバー",
+        totalScore:"6点", scoreClass:"mid",
+        advice:"冒頭の「英語教育の低年齢化が進む中で」は設問の答えに不要な背景説明です。これを削るだけで40字以内に収まります。答えを書く前に「これは設問が求めている内容か？」を確認しましょう。"
+      },
+      {
+        name:"Bさん", cls:"b",
+        text:"母語の豊かな表現力を育てることが、英語力向上にもつながるということ。",
+        chars:"33字",
+        judges:[
+          { elemLabel:"二語の使用", elemCls:"e1", q:"「母語」と「英語力」という指定の二語が両方使われているか？",
+            correct:true,
+            okFb:"○ 正解！二語ともに使われています。",
+            ngFb:"△ 二語は使われています。", pts:2, label:"二語" },
+          { elemLabel:"内容", elemCls:"e2", q:"「母語の豊かな表現力を育てることが英語力向上につながる」という主張が書かれているか？",
+            correct:true,
+            okFb:"○ 正解！筆者の主張を正確に33字でまとめています。",
+            ngFb:"△ 内容は正確に含まれています。", pts:4, label:"内容" },
+          { elemLabel:"字数", elemCls:"er", q:"40字以内に収まっているか？",
+            correct:true,
+            okFb:"○ 正解！33字で40字以内に収まっています。",
+            ngFb:"△ 33字で40字以内に収まっています。", pts:2, label:"字数" }
+        ],
+        disease:"（満点！）無駄のない答案",
+        totalScore:"8点", scoreClass:"high",
+        advice:"二語を使いながら、筆者の主張を33字という必要最小限でまとめられています。字数に余裕があっても、余計な情報を加えない判断が正解です。"
+      },
+      {
+        name:"Cさん", cls:"c",
+        text:"英語と母語を対立させず、両方バランスよく学ぶことで英語力が向上するということ。",
+        chars:"39字",
+        judges:[
+          { elemLabel:"二語の使用", elemCls:"e1", q:"「母語」と「英語力」という指定の二語が両方使われているか？",
+            correct:true,
+            okFb:"○ 正解！二語ともに使われています。",
+            ngFb:"△ 二語は使われています。", pts:2, label:"二語" },
+          { elemLabel:"内容", elemCls:"e2", q:"「母語の豊かな表現力を育てることが英語力向上につながる」という主張が書かれているか？",
+            correct:false,
+            okFb:"✕ 惜しい！「両方バランスよく学ぶ」は筆者の主張ではありません。筆者は「日本語の豊かな表現力を育てることが英語力向上につながる」と述べており、「母語を優先的に育てる」という方向性です。",
+            ngFb:"△ 「両方バランスよく学ぶ」は本文の主張ではありません。筆者は母語を育てることを優先しています。", pts:1, label:"内容" },
+          { elemLabel:"字数", elemCls:"er", q:"40字以内に収まっているか？",
+            correct:true,
+            okFb:"○ 字数は39字でクリアしています。",
+            ngFb:"△ 39字で40字以内に収まっています。", pts:2, label:"字数" }
+        ],
+        disease:"筆者の主張を読み違えた（バランス論にすり替え）",
+        totalScore:"5点", scoreClass:"mid",
+        advice:"「英語と日本語を対立させるのではなく」という表現を「両方バランスよく」と読み違えてしまいました。筆者の主張は「母語（日本語）をしっかり育てることが英語力向上の基盤になる」という順序関係です。"
+      }
+    ],
+    scoringIntro:"「二語を使って」という指定がある問いです。指定語を必ず含めた上で、筆者の主張を40字以内にまとめます。",
+    criteria:[
+      { pts:"+2", label:"指定語", text:"「母語」と「英語力」という二語を両方使っているか", isRule:true },
+      { pts:"+4", label:"内容", text:"「母語の豊かな表現力を育てることが英語力向上につながる」という主張", isRule:false },
+      { pts:"+2", label:"字数", text:"40字以内に収まっているか", isRule:true }
+    ],
+    modelAnswer:"母語の豊かな表現力を育てることが、英語力の向上にもつながること。",
+    modelChars:"31字",
+    modelElems:[
+      { tag:"er", label:"指定語＋2点", text:"「母語」と「英語力」を両方含む" },
+      { tag:"e1", label:"内容＋4点",   text:"「母語の表現力を育てることが英語力向上につながる」" },
+      { tag:"e2", label:"字数＋2点",   text:"31字で40字以内にクリア" }
+    ],
+    summaryTitle:"この問題から学ぶ2つのルール",
+    summaryRules:[
+      "「○語を使って」という指定語は必ず含める——見落としは即減点",
+      "「バランスよく」「両方大切」という一般論は筆者の主張ではない"
+    ]
+  }
+];
+
+/* ═══════════════════════
+   STATE
+═══════════════════════ */
+let lesson = null;
+let lessonIdx = 0;
+let waIdx = 0;
+let judgesDone = 0;
+let collapseOpen = false;
+
+/* ═══════════════════════
+   NAV
+═══════════════════════ */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  const walls = ["WALL 01","WALL 02","WALL 03","WALL 04"];
+  const wallNames = { "WALL 01":"形式の壁","WALL 02":"的外れの壁","WALL 03":"部分点の壁","WALL 04":"文字数の壁" };
+  let html = '';
+  walls.forEach(wall => {
+    const items = DB.map((d,i)=>({d,i})).filter(({d})=>d.wall===wall);
+    if (!items.length) return;
+    html += `<div class="wall-section">
+      <div class="wall-label">
+        <div class="wall-badge">${wall}</div>
+        <div class="wall-name">${wallNames[wall]}</div>
+      </div>
+      <div class="wall-items">
+        ${items.map(({d,i},wi)=>`
+          <div class="list-item" style="animation-delay:${wi*.06}s" onclick="startLesson(${i})">
+            <div class="li-num">${i+1}</div>
+            <div class="li-divider"></div>
+            <div class="li-info">
+              <div class="li-theme">${d.theme}</div>
+              <div class="li-q">${d.question}</div>
+            </div>
+            <div class="li-arrow">›</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  });
+  document.getElementById('list-body').innerHTML = html;
+  show('list');
+}
+
+function setProgress(n) {
+  for (let i=1;i<=4;i++) {
+    const el = document.getElementById(`ls${i}`);
+    el.className = 'lb-step' + (i<n ? ' done' : i===n ? ' active' : '');
+  }
+  document.getElementById('lb-lbl').textContent = `STEP ${n} / 4`;
+}
+
+function goPhase(n) {
+  document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+  document.getElementById(`ph${n}`).classList.add('active');
+  setProgress(n);
+  window.scrollTo(0, 0);
+}
+
+/* ═══════════════════════
+   START LESSON
+═══════════════════════ */
+function startLesson(idx) {
+  lesson = DB[idx];
+  lessonIdx = idx;
+  waIdx = 0;
+
+  document.getElementById('ph1-wall').textContent  = `${lesson.wall} · ${lesson.wallLabel}`;
+  document.getElementById('ph1-theme').textContent = lesson.theme;
+  document.getElementById('ph1-passage').innerHTML = lesson.passage.replace(/\n/g,'<br>');
+  document.getElementById('ph1-q').textContent     = lesson.question;
+  document.getElementById('ph1-score').textContent = lesson.score;
+
+  // criteria
+  document.getElementById('ph3-intro').textContent = lesson.scoringIntro;
+  document.getElementById('ph3-crit').innerHTML = lesson.criteria.map(c=>`
+    <div class="crit-card${c.isRule?' rule':''}">
+      <div class="crit-pts-col">
+        <div class="crit-pts-num">${c.pts}</div>
+        <div class="crit-pts-lbl">${c.label}</div>
+      </div>
+      <div class="crit-info">
+        <div class="crit-tag">${c.label}</div>
+        <div class="crit-text">${c.text}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // model
+  document.getElementById('ph4-model').textContent = lesson.modelAnswer;
+  document.getElementById('ph4-chars').textContent = lesson.modelChars;
+  document.getElementById('ph4-pts').textContent   = lesson.score;
+  document.getElementById('ph4-elems').innerHTML   = lesson.modelElems.map(e=>`
+    <div class="elem-row">
+      <div class="elem-tag ${e.tag}">${e.label}</div>
+      <div class="elem-text">${e.text}</div>
+    </div>
+  `).join('');
+  document.getElementById('ph4-summary').innerHTML = `
+    <div class="summary-head">${lesson.summaryTitle}</div>
+    <div class="summary-rules">${lesson.summaryRules.map(r=>`<div class="summary-rule">${r}</div>`).join('')}</div>
+  `;
+
+  const nextIdx = (idx+1) % DB.length;
+  const nb = document.getElementById('ph4-next');
+  nb.innerHTML = `次の問題へ <span style="font-size:12px;opacity:.6">（${DB[nextIdx].theme}）</span>`;
+  nb.onclick = () => startLesson(nextIdx);
+
+  show('lesson');
+  goPhase(1);
+}
+
+/* ═══════════════════════
+   WRONG ANSWER FLOW
+═══════════════════════ */
+function startWA() {
+  waIdx = 0;
+  goPhase(2);
+  renderWA();
+}
+
+function toggleCollapse(btn) {
+  collapseOpen = !collapseOpen;
+  btn.classList.toggle('open', collapseOpen);
+  document.getElementById('collapse-body').classList.toggle('open', collapseOpen);
+}
+
+function renderWA() {
+  const wa    = lesson.wrongAnswers[waIdx];
+  const total = lesson.wrongAnswers.length;
+  judgesDone  = 0;
+  collapseOpen = false;
+
+  const judgeCards = wa.judges.map((j,ji)=>`
+    <div class="judge-card" id="jc-${ji}">
+      <div class="judge-q">
+        <div class="judge-elem-lbl ${j.elemCls}">${j.elemLabel}</div>
+        <div class="judge-q-text">${j.q}</div>
+      </div>
+      <div class="judge-btns">
+        <button class="judge-btn yes" onclick="judge(${ji},true)">○ 満たしている</button>
+        <button class="judge-btn no"  onclick="judge(${ji},false)">✕ 満たしていない</button>
+      </div>
+      <div class="judge-fb" id="jf-${ji}"></div>
+    </div>
+  `).join('');
+
+  document.getElementById('ph2-body').innerHTML = `
+    <div class="wa-progress">${waIdx+1}人目 / ${total}人の誤答</div>
+
+    <!-- 設問・本文の折りたたみ -->
+    <div class="passage-collapse">
+      <button class="collapse-toggle" onclick="toggleCollapse(this)">課題文・設問を確認する</button>
+      <div class="collapse-body" id="collapse-body">
+        <div class="passage-text" style="padding:16px 18px;font-family:'Shippori Mincho',serif;font-size:13.5px;line-height:2.2;color:var(--ink);">
+          ${lesson.passage.replace(/\n/g,'<br>')}
+        </div>
+        <div class="collapse-q">
+          <div class="collapse-q-lbl">設 問</div>
+          <div class="collapse-q-text">${lesson.question}</div>
+          <div style="font-size:11px;color:var(--ink-soft);margin-top:4px;">${lesson.score}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 誤答カード -->
+    <div style="margin-top:14px"></div>
+    <div class="wa-card">
+      <div class="wa-card-head">
+        <div class="wa-avatar ${wa.cls}">${wa.name[0]}</div>
+        <div class="wa-meta">
+          <div class="wa-name">${wa.name}の解答</div>
+          <div class="wa-chars">${wa.chars}</div>
+        </div>
+      </div>
+      <div class="wa-text">${wa.text}</div>
+    </div>
+
+    <!-- 採点判定 -->
+    <div class="judge-wrap">
+      <div class="judge-sec-lbl">採点要素を判定する</div>
+      ${judgeCards}
+    </div>
+    <div class="ps-card" id="ps-card"></div>
+  `;
+}
+
+function judge(ji, userSaid) {
+  const wa = lesson.wrongAnswers[waIdx];
+  const j  = wa.judges[ji];
+  const card = document.getElementById(`jc-${ji}`);
+  const fb   = document.getElementById(`jf-${ji}`);
+
+  card.querySelectorAll('.judge-btn').forEach(b => b.disabled = true);
+  if (userSaid) card.querySelector('.judge-btn.yes').classList.add('chosen');
+  else          card.querySelector('.judge-btn.no').classList.add('chosen');
+
+  const correct = (userSaid === j.correct);
+  card.classList.add(correct ? 'ok' : 'ng');
+  fb.innerHTML   = `<div class="jf-head">${correct ? '○ 正解！' : '✕ 不正解'}</div>${correct ? j.okFb : j.ngFb}`;
+  fb.className   = `judge-fb show ${correct ? 'ok' : 'ng'}`;
+
+  judgesDone++;
+  if (judgesDone === wa.judges.length) setTimeout(showPS, 350);
+}
+
+function showPS() {
+  const wa      = lesson.wrongAnswers[waIdx];
+  const isLast  = (waIdx === lesson.wrongAnswers.length - 1);
+
+  const scoreColor = wa.scoreClass==='high' ? 'var(--teal)' : wa.scoreClass==='mid' ? 'var(--gold)' : 'var(--terra)';
+  const rows = wa.judges.map(j=>`
+    <div class="ps-row">
+      <span>${j.label}</span>
+      <span class="${j.pts>0?'ps-pt-ok':'ps-pt-ng'}">${j.pts>0?'+'+j.pts+'点':'0点'}</span>
+    </div>
+  `).join('');
+
+  const ps = document.getElementById('ps-card');
+  ps.innerHTML = `
+    <div class="ps-head">
+      <div class="ps-head-name">${wa.name}の採点結果</div>
+      <div class="ps-head-score" style="color:${scoreColor}">${wa.totalScore}<small>点</small></div>
+    </div>
+    <div class="ps-rows">${rows}</div>
+    <div class="ps-disease-wrap">
+      <div class="ps-disease-name">${wa.disease}</div>
+      <div class="ps-advice">${wa.advice}</div>
+    </div>
+    <div style="padding:0 18px 18px">
+      <button class="nav-btn" onclick="${isLast?'goPhase(3)':'nextWA()'}">
+        ${isLast?'プロの採点基準を見る':'次の誤答へ'}
+      </button>
+    </div>
+  `;
+  ps.classList.add('show');
+  setTimeout(()=>ps.scrollIntoView({behavior:'smooth',block:'start'}), 80);
+}
+
+function nextWA() {
+  waIdx++;
+  renderWA();
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
